@@ -11,7 +11,6 @@ const supplyChainItemSchema = {
     name: { type: 'string' },
     color: { type: 'string' },
     price: { type: 'number' },
-    referenceData: { type: 'object' },
   },
   required: ['name'],
   additionalProperties: false,
