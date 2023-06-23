@@ -2,6 +2,7 @@ const express = require('express');
 const { validateSupplyChainItem, validateEvent } = require('./jsonSchema');
 const { SupplyChainItem, Event } = require('./models');
 const connectDB = require('./db');
+const bodyParser = require('body-parser');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -25,6 +26,10 @@ const swaggerOptions = {
   };
   
   const swaggerSpec = swaggerJsDoc(swaggerOptions);
+
+  // Configure body-parser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
   
   // Add Swagger middleware
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -63,7 +68,6 @@ const swaggerOptions = {
  */
 app.post('/items', (req, res) => {
   const newItem = req.body;
-
   // Validate the request payload using JSON Schema
   const isValid = validateSupplyChainItem(newItem);
   if (!isValid) {
@@ -78,6 +82,7 @@ app.post('/items', (req, res) => {
       res.status(201).json(createdItem);
     })
     .catch((error) => {
+      console.log('error creating item>>>>>>',error);
       res.status(500).json({ error: 'Failed to create the item' });
     });
 });
@@ -310,24 +315,22 @@ app.get('/items/:itemId/events', (req, res) => {
  *       properties:
  *         name:
  *           type: string
- *         description:
+ *         color:
  *           type: string
- *         timestamp:
- *           type: string
- *           format: date-time
+ *         price:
+ *           type: number
+ *          
  *        
  *     Event:
  *       type: object
  *       properties:
- *         itemId:
+ *         location:
  *           type: string
- *         name:
+ *         custodian:
  *           type: string
- *         description:
- *           type: string
- *         timestamp:
- *           type: string
- *           format: date-time
+ *         
+ *           
+ *          
  *        
  *     ValidationError:
  *       type: object

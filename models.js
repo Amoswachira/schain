@@ -8,7 +8,6 @@ const supplyChainItemSchema = new mongoose.Schema({
   name: { type: String, required: true },
   color: { type: String },
   price: { type: Number },
-  referenceData: { type: mongoose.Schema.Types.Mixed },
   events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
 });
 
