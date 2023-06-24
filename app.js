@@ -5,6 +5,7 @@ const connectDB = require('./db');
 const bodyParser = require('body-parser');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors');
 
 const app = express();
 
@@ -27,9 +28,17 @@ const swaggerOptions = {
   
   const swaggerSpec = swaggerJsDoc(swaggerOptions);
 
+app.use(cors({
+    origin: '*',
+    allowedHeaders: '*',
+  }));
+  
+
   // Configure body-parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+
   
   // Add Swagger middleware
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
