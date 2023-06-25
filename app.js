@@ -123,6 +123,44 @@ app.get('/items', (req, res) => {
       });
   });
 
+
+  // Get item by ID
+/**
+ * @swagger
+ * /items/{itemId}:
+ *   get:
+ *     summary: Get a supply chain item by ID
+ *     parameters:
+ *       - in: path
+ *         name: itemId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the supply chain item
+ *     responses:
+ *       200:
+ *         description: Success
+ *       404:
+ *         description: Item not found
+ *       500:
+ *         description: Failed to retrieve the item
+ */
+
+  app.get('/items/:itemId', (req, res) => {
+    const itemId = req.params.itemId;
+  
+    SupplyChainItem.findById(itemId)
+      .then((item) => {
+        if (!item) {
+          return res.status(404).json({ error: 'Item not found' });
+        }
+        res.json(item);
+      })
+      .catch((error) => {
+        res.status(500).json({ error: 'Failed to retrieve the item' });
+      });
+  });
+
 // Update supply chain item reference data
 /**
  * @swagger
